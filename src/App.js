@@ -20,31 +20,31 @@ class App extends Component {
       updateBucket: '',
       updateTodo: '',
       updateName: '',
-      isDisableAddBucket: true,  
-      isDisableAddTodo: true    
+      isDisableAddBucket: true,
+      isDisableAddTodo: true
     }
   }
 
   handleChangeBucket(e) {
-    if(e.target.value.length>0) {
+    if (e.target.value.length > 0) {
       this.setState({
         bucketName: e.target.value,
         isDisableAddBucket: false
       })
-    }else {
+    } else {
       this.setState({
         bucketName: e.target.value,
         isDisableAddBucket: true
       })
-    }    
+    }
   }
 
   handleChangeTodo(e, i) {
-    if(e.target.value.length>0) {
+    if (e.target.value.length > 0) {
       let dataBucket = this.props.bucket;
       dataBucket[i].isDisableAddTodo = false
       this.props.editBucket(dataBucket);
-    }else {
+    } else {
       let dataBucket = this.props.bucket;
       dataBucket[i].isDisableAddTodo = true
       this.props.editBucket(dataBucket);
@@ -56,13 +56,13 @@ class App extends Component {
 
   handleSubmitBucket(e) {
     e.preventDefault();
-    if (this.state.bucketName && this.state.bucketName!="") {
+    if (this.state.bucketName && this.state.bucketName != "") {
       let dataBucket = this.props.bucket;
       let bucket = {
         bucketName: this.state.bucketName,
         toDo: [],
         show: false,
-        isDisableAddTodo:true
+        isDisableAddTodo: true
       }
       dataBucket.push(bucket);
       this.props.createBucket(dataBucket);
@@ -70,8 +70,8 @@ class App extends Component {
         bucketName: '',
         isDisableAddBucket: true
       });
-    }else {
-      this.setState({isDisableAddBucket: true})
+    } else {
+      this.setState({ isDisableAddBucket: true })
     }
   }
 
