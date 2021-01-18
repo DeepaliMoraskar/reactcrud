@@ -146,7 +146,7 @@ class App extends Component {
   listToDoView(data, index, bucketIndex) {
     return (
       <div className="row" key={index + 1}>
-        <div className="col-md-10">
+        <div className="col-md-6">
           {data.show ?
             <input type="text" id={index} className="form-control" value={data.toDoName} onChange={(e) =>
               this.updateTodo(e, index, bucketIndex)} /> :
@@ -191,9 +191,13 @@ class App extends Component {
         <hr />
         <div>
           <h3>Add Contact Form</h3>
-          <div className="col-md-10">
-            <input type="text" onChange={this.handleChangeBucket} className="form-control" value={this.state.bucketName} /><br />
-            <input type="submit" className="btn btn-success" value="ADD BUCKET" onClick={this.handleSubmitBucket} />
+          <div className="row">
+            <div className="col-md-10">
+              <input type="text" onChange={this.handleChangeBucket} className="form-control" value={this.state.bucketName} /><br />
+            </div>
+            <div className="col-md-2">
+              <input type="submit" className="btn btn-success" value="ADD BUCKET" onClick={this.handleSubmitBucket} />
+            </div>
           </div>
           <hr />
           {<ul className="list-group">
@@ -205,9 +209,13 @@ class App extends Component {
             {this.props.bucket && this.props.bucket.map((dataBucket, bucketIndex) =>
               <div key={bucketIndex}>
                 <h3>{dataBucket.bucketName}</h3>
-                <div>
-                  <input type="text" onChange={(e) => this.handleChangeTodo(e)} className="form-control" ref={(input) => this.input = input} /><br />
-                  <input type="submit" className="btn btn-success" value="ADD TODO" onClick={(e) => this.handleSubmitTodo(e, bucketIndex)} />
+                <div className="row">
+                  <div className="col-md-10">
+                    <input type="text" onChange={(e) => this.handleChangeTodo(e)} className="form-control" ref={(input) => this.input = input} /><br />
+                  </div>
+                  <div className="col-md-2">
+                    <input type="submit" className="btn btn-success" value="ADD TODO" onClick={(e) => this.handleSubmitTodo(e, bucketIndex)} />
+                  </div>
                 </div>
                 <hr />
                 {<ul className="list-group">
