@@ -1,0 +1,7 @@
+export const GET_ALL_CONTACTS = 'GET_ALL_CONTACTS';
+export const CREATE_NEW_TODO = 'CREATE_NEW_TODO';
+export const CREATE_NEW_BUCKET = 'CREATE_NEW_BUCKET';
+export const REMOVE_BUCKET = 'REMOVE_BUCKET';
+export const REMOVE_TODO = 'REMOVE_TODO';
+export const EDIT_TODO = 'EDIT_TODO';
+export const EDIT_BUCKET = 'EDIT_BUCKET';
