@@ -34,17 +34,19 @@ class App extends Component {
 
   handleSubmitBucket(e) {
     e.preventDefault();
-    let dataBucket = this.props.bucket;
-    let bucket = {
-      bucketName: this.state.bucketName,
-      toDo: [],
-      show: false
+      if(this.state.bucketName) {
+      let dataBucket = this.props.bucket;
+      let bucket = {
+        bucketName: this.state.bucketName,
+        toDo: [],
+        show: false
+      }
+      dataBucket.push(bucket);
+      this.props.createBucket(dataBucket);
+      this.setState({
+        bucketName: ''
+      });
     }
-    dataBucket.push(bucket);
-    this.props.createBucket(dataBucket);
-    this.setState({
-      bucketName: ''
-    });
   }
 
   updateBucket(e, i) {
@@ -68,18 +70,20 @@ class App extends Component {
   }
 
   handleSubmitTodo(e, i) {
-    let dataBucket = this.props.bucket
-    let toDo = {
-      toDoName: this.state.toDoName,
-      show: false,
-      isComplete: false
+    if(this.state.toDoName!="") {
+      let dataBucket = this.props.bucket
+      let toDo = {
+        toDoName: this.state.toDoName,
+        show: false,
+        isComplete: false
+      }
+      dataBucket[i].toDo.push(toDo);
+      this.props.createTodo(dataBucket);
+      this.state.toDoName !== '' ? this.input.value = '' : null
+      this.setState({
+        toDoName: ''
+      });
     }
-    dataBucket[i].toDo.push(toDo);
-    this.props.createTodo(dataBucket);
-    this.state.toDoName !== '' ? this.input.value = '' : null
-    this.setState({
-      toDoName: ''
-    });
   }
 
   onEditBucket = (e, bucketIndex) => {
