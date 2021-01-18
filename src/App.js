@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'font-awesome/css/font-awesome.min.css';
 import { connect } from 'react-redux';
 import * as bucketAction from './actions/bucketAction';
+import styles from './App.css';
 
 class App extends Component {
 
@@ -34,7 +37,7 @@ class App extends Component {
 
   handleSubmitBucket(e) {
     e.preventDefault();
-      if(this.state.bucketName) {
+    if (this.state.bucketName) {
       let dataBucket = this.props.bucket;
       let bucket = {
         bucketName: this.state.bucketName,
@@ -70,7 +73,7 @@ class App extends Component {
   }
 
   handleSubmitTodo(e, i) {
-    if(this.state.toDoName!="") {
+    if (this.state.toDoName != "") {
       let dataBucket = this.props.bucket
       let toDo = {
         toDoName: this.state.toDoName,
@@ -102,9 +105,9 @@ class App extends Component {
     data[bucketIndex].toDo[i].show = data[bucketIndex].toDo[i].show ? false : true
     if (data[bucketIndex].toDo[i].show) {
       this.props.editTodo(data);
-      this.setState({ toDoBtn: 'SAVE' })
+      this.setState({ toDoBtn: 'fa fa-check-circle fa-2x' })
     } else {
-      this.setState({ toDoBtn: 'EDIT' })
+      this.setState({ toDoBtn: 'fa fa-pencil fa-2x' })
     }
   }
 
@@ -113,9 +116,9 @@ class App extends Component {
     data[bucketIndex].toDo[i].isComplete = data[bucketIndex].toDo[i].isComplete ? false : true
     if (data[bucketIndex].toDo[i].isComplete) {
       this.props.editTodo(data);
-      this.setState({ inCompleteBtn: 'In Complete' })
+      this.setState({ inCompleteBtn: 'fa fa-undo fa-2x' })
     } else {
-      this.setState({ inCompleteBtn: 'Complete' })
+      this.setState({ inCompleteBtn: 'fa fa-list fa-2x' })
     }
   }
 
@@ -123,8 +126,9 @@ class App extends Component {
 
   listBucketView(data, index) {
     return (
+
       <div className="row" key={index}>
-        <div className="col-md-10">
+        <div className="col-md-2">
           {data.show ?
             <input type="text" id={index} className="form-control" value={data.bucketName} onChange={(e) =>
               this.updateBucket(e, index)} /> :
@@ -145,34 +149,29 @@ class App extends Component {
 
   listToDoView(data, index, bucketIndex) {
     return (
-      <div className="row" key={index + 1}>
-        <div className="col-md-6">
+      <div className="row listItem" key={index + 1}>
+        <div className="col-md-6 toDolistInput">
           {data.show ?
             <input type="text" id={index} className="form-control" value={data.toDoName} onChange={(e) =>
               this.updateTodo(e, index, bucketIndex)} /> :
-            <div style={{textDecoration: data.isComplete ? 'line-through' : 'none'}}>
+            <div style={{ textDecoration: data.isComplete ? 'line-through' : 'none' }}>
               {data.toDoName}
             </div>
           }
         </div>
 
         <div className="col-md-2">
-          <button onClick={(e) => this.onCompleteTodo(e, index, bucketIndex)} className="btn btn-danger">
-            {data.isComplete ? this.state.inCompleteBtn : 'Complete'}
-          </button>
+          <i className={data.isComplete ? this.state.inCompleteBtn : 'fa fa-list fa-2x'} aria-hidden="true" onClick={(e) => this.onCompleteTodo(e, index, bucketIndex)}></i>
         </div>
 
         <div className="col-md-2">
-          <button onClick={(e) => this.onEditTodo(e, index, bucketIndex)} className="btn btn-danger">
-            {data.show ? this.state.toDoBtn : 'EDIT'}
-          </button>
+          <i className={data.show ? this.state.toDoBtn : 'fa fa-pencil fa-2x'} aria-hidden="true" onClick={(e) => this.onEditTodo(e, index, bucketIndex)}></i>
         </div>
         <div className="col-md-2">
-          <button onClick={(e) => this.deleteTodo(e, index, bucketIndex)} className="btn btn-danger">
-            Remove
-          </button>
+          <i class="fa fa-trash fa-2x" aria-hidden="true" onClick={(e) => this.deleteTodo(e, index, bucketIndex)}></i>
         </div>
       </div>
+
     )
   }
 
@@ -186,43 +185,59 @@ class App extends Component {
 
   render() {
     return (
-      <div className="container">
-        <h1>Clientside Contacts Application</h1>
-        <hr />
-        <div>
-          <h3>Add Contact Form</h3>
-          <div className="row">
-            <div className="col-md-10">
+      <div>
+
+        <nav class="navbar navbar-light bg-light justify-content-between">
+          <a class="navbar-brand">TO-DO</a>
+          <form class="form-inline">
+            <input type="text" onChange={this.handleChangeBucket} className="form-control mr-sm-2" value={this.state.bucketName} />
+            <button type="submit" className="btn btn-outline-success my-2 my-sm-0" onClick={this.handleSubmitBucket}>Add Bucket</button>
+          </form>
+        </nav>
+
+        {/* <div className="row">
+            <div className="col-md-2">
               <input type="text" onChange={this.handleChangeBucket} className="form-control" value={this.state.bucketName} /><br />
             </div>
             <div className="col-md-2">
               <input type="submit" className="btn btn-success" value="ADD BUCKET" onClick={this.handleSubmitBucket} />
             </div>
-          </div>
-          <hr />
-          {<ul className="list-group">
+          </div> */}
+
+        {/* {<ul className="list-group bg2">
             {this.props.bucket && this.props.bucket.map((dataBucket, i) => this.listBucketView(dataBucket, i, 'bucket'))}
-          </ul>}
-        </div>
-        {this.props.bucket && this.props.bucket.length > 0 ?
-          <div>
-            {this.props.bucket && this.props.bucket.map((dataBucket, bucketIndex) =>
-              <div key={bucketIndex}>
-                <h3>{dataBucket.bucketName}</h3>
-                <div className="row">
-                  <div className="col-md-10">
-                    <input type="text" onChange={(e) => this.handleChangeTodo(e)} className="form-control" ref={(input) => this.input = input} /><br />
+          </ul>} */}
+        {/* </div> */}
+
+
+
+        <div className="container">
+          {this.props.bucket && this.props.bucket.length > 0 ?
+
+            <div className="row bucketContainer">
+              {this.props.bucket && this.props.bucket.map((dataBucket, bucketIndex) =>
+
+                <div className="row bucket" key={bucketIndex}>
+                  <h6>Bucket : {dataBucket.bucketName}</h6>
+
+                  <div className="row toDoContainer">
+
+                    <div className="col-md-8">
+                      <input type="text" onChange={(e) => this.handleChangeTodo(e)} className="form-control" ref={(input) => this.input = input} />
+                    </div>
+                    <div className="col-md-2">
+                      <input type="submit" className="btn btn-success" value="Add Todo" onClick={(e) => this.handleSubmitTodo(e, bucketIndex)} />
+                    </div>
                   </div>
-                  <div className="col-md-2">
-                    <input type="submit" className="btn btn-success" value="ADD TODO" onClick={(e) => this.handleSubmitTodo(e, bucketIndex)} />
-                  </div>
+
+                  {<ul className="list-group toDolist">
+                    {dataBucket.toDo && dataBucket.toDo.map((todo, i) => this.listToDoView(todo, i, bucketIndex))}
+                  </ul>}
                 </div>
-                <hr />
-                {<ul className="list-group">
-                  {dataBucket.toDo && dataBucket.toDo.map((todo, i) => this.listToDoView(todo, i, bucketIndex))}
-                </ul>}
-              </div>)}
-          </div> : ''}
+
+              )}
+            </div> : <div className="row addBucketMsg"><i className="fa fa-plus fa-2x" aria-hidden="true"></i><p className="bucketMsgP">Add New Bucket using Add Bucket Button</p></div>}
+        </div>
       </div>
     )
   }
