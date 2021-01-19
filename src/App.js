@@ -26,7 +26,7 @@ class App extends Component {
   }
 
   handleChangeBucket(e) {
-    if (e.target.value.length > 0) {
+    if (e.target.value.trim() !== "") {
       this.setState({
         bucketName: e.target.value,
         isDisableAddBucket: false
@@ -42,7 +42,8 @@ class App extends Component {
   handleChangeTodo(e, bucketItem, i) {
     let dataBucket = this.props.bucket;
     let dataObj = dataBucket
-    if (e.target.value.length > 0) {
+
+    if (e.target.value.trim() !== "") {
       dataBucket[i].isDisableAddTodo = false
       this.props.editBucket(dataBucket);
       dataObj[i].name = e.target.value;
@@ -78,7 +79,7 @@ class App extends Component {
     }
   }
 
-   updateTodo(e, i, bucketIndex) {
+  updateTodo(e, i, bucketIndex) {
     let data = this.props.bucket;
     data[bucketIndex].toDo[i].toDoName = e.target.value
     this.props.editTodo(data);
@@ -190,13 +191,14 @@ class App extends Component {
                   <h6>Bucket : {dataBucket.bucketName}</h6>
 
                   <div className="row toDoContainer">
-
-                    <div className="col-md-8" key={bucketIndex}>
-                      <input type="text" onChange={(e) => this.handleChangeTodo(e, dataBucket, bucketIndex)} className="form-control" ref={(input) => this.input[bucketIndex] = input} />
-                    </div>
-                    <div className="col-md-2">
-                      <input type="submit" className="btn btn-success" disabled={dataBucket.isDisableAddTodo} value="Add Todo" onClick={(e) => this.handleSubmitTodo(e, bucketIndex)} />
-                    </div>
+                    <form className="form-inline">
+                      <div className="col-md-8" key={bucketIndex}>
+                        <input type="text" onChange={(e) => this.handleChangeTodo(e, dataBucket, bucketIndex)} className="form-control" ref={(input) => this.input[bucketIndex] = input} />
+                      </div>
+                      <div className="col-md-2">
+                        <input type="submit" className="btn btn-success" disabled={dataBucket.isDisableAddTodo} value="Add Todo" onClick={(e) => this.handleSubmitTodo(e, bucketIndex)} />
+                      </div>
+                    </form>
                   </div>
 
                   {<ul className="list-group toDolist">
