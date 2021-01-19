@@ -39,18 +39,20 @@ class App extends Component {
     }
   }
 
-  handleChangeTodo(e, i) {
-    if (e.target.value.length > 0) {
-      let dataBucket = this.props.bucket;
+  handleChangeTodo(e, bucketItem, i) {
+    let dataBucket = this.props.bucket;
+    let dataObj = dataBucket
+    if (e.target.value.length > 0) {      
       dataBucket[i].isDisableAddTodo = false
       this.props.editBucket(dataBucket);
+      dataObj[i].name = e.target.value;      
     } else {
-      let dataBucket = this.props.bucket;
       dataBucket[i].isDisableAddTodo = true
       this.props.editBucket(dataBucket);
     }
     this.setState({
-      toDoName: e.target.value,
+      toDoName: dataObj,
+      bucketId:i
     })
   }
 
@@ -62,13 +64,14 @@ class App extends Component {
         bucketName: this.state.bucketName,
         toDo: [],
         show: false,
-        isDisableAddTodo: true
+        isDisableAddTodo: true,
       }
       dataBucket.push(bucket);
       this.props.createBucket(dataBucket);
       this.setState({
         bucketName: '',
-        isDisableAddBucket: true
+        isDisableAddBucket: true,
+        dataBucket: dataBucket
       });
     } else {
       this.setState({ isDisableAddBucket: true })
@@ -81,7 +84,7 @@ class App extends Component {
     this.props.editBucket(dataBucket);
     this.setState({
       updateName: e.target.value,
-      updatedBucket: dataBucket
+      dataBucket: dataBucket
     });
   }
 
@@ -90,37 +93,26 @@ class App extends Component {
     data[bucketIndex].toDo[i].toDoName = e.target.value
     this.props.editTodo(data);
     this.setState({
-      updateTodo: e.target.value,
-      updatedTodo: data
+      dataBucket: data
     });
   }
+  
 
-  handleSubmitTodo(e, i) {
-    if (this.state.toDoName !== "") {
-      let dataBucket = this.props.bucket
-      dataBucket[i].isDisableAddTodo = true
-      let toDo = {
-        toDoName: this.state.toDoName,
-        show: false,
-        isComplete: false
-      }
-      dataBucket[i].toDo.push(toDo);
-      this.props.createTodo(dataBucket);
-      this.state.toDoName !== '' ? this.input[i].value = '' : null
-      this.setState({
-        toDoName: ''
-      });
-    }
-  }
-
-  onEditBucket = (e, bucketIndex) => {
-    let data = this.props.bucket;
-    data[bucketIndex].show = data[bucketIndex].show ? false : true
-    if (data[bucketIndex].show) {
-      this.props.editBucket(data);
-      this.setState({ bucketBtn: 'SAVE' })
-    } else {
-      this.setState({ bucketBtn: 'EDIT' })
+    handleSubmitTodo(e, i) {
+      if (this.state.toDoName[i].name !== "") {
+        let dataBucket = this.props.bucket
+        dataBucket[i].isDisableAddTodo = true
+        let toDo = {
+          toDoName: this.state.toDoName[i].name,
+          show: false,
+          isComplete: false
+        }
+        dataBucket[i].toDo.push(toDo);
+        this.props.createTodo(dataBucket);
+        this.input[i].value = ''
+        this.setState({
+          dataBucket: dataBucket
+        });
     }
   }
 
@@ -128,22 +120,24 @@ class App extends Component {
     let data = this.props.bucket;
     data[bucketIndex].toDo[i].show = data[bucketIndex].toDo[i].show ? false : true
     if (data[bucketIndex].toDo[i].show) {
-      this.props.editTodo(data);
-      this.setState({ toDoBtn: 'fa fa-check-circle fa-2x' })
+      data[bucketIndex].toDo[i].toDoBtn = 'fa fa-check-circle fa-2x';
     } else {
-      this.setState({ toDoBtn: 'fa fa-pencil fa-2x' })
+      data[bucketIndex].toDo[i].toDoBtn = 'fa fa-pencil fa-2x';      
     }
+    this.props.editTodo(data);
+    this.setState({dataBucket: data  })
   }
 
   onCompleteTodo = (e, i, bucketIndex) => {
     let data = this.props.bucket;
     data[bucketIndex].toDo[i].isComplete = data[bucketIndex].toDo[i].isComplete ? false : true
     if (data[bucketIndex].toDo[i].isComplete) {
-      this.props.editTodo(data);
-      this.setState({ inCompleteBtn: 'fa fa-undo fa-2x' })
+      data[bucketIndex].toDo[i].inCompleteBtn = 'fa fa-undo fa-2x';      
     } else {
-      this.setState({ inCompleteBtn: 'fa fa-list fa-2x' })
+      data[bucketIndex].toDo[i].inCompleteBtn = 'fa fa-list fa-2x';
     }
+    this.props.editTodo(data);
+    this.setState({ dataBucket: data})
   }
 
 
@@ -185,11 +179,11 @@ class App extends Component {
         </div>
 
         <div className="col-md-2">
-          <i className={data.isComplete ? this.state.inCompleteBtn : 'fa fa-list fa-2x'} aria-hidden="true" onClick={(e) => this.onCompleteTodo(e, index, bucketIndex)}></i>
+          <i className={data.isComplete ? this.state.dataBucket[bucketIndex].toDo[index].inCompleteBtn : 'fa fa-list fa-2x'} aria-hidden="true" onClick={(e) => this.onCompleteTodo(e, index, bucketIndex)}></i>
         </div>
 
         <div className="col-md-2">
-          <i className={data.show ? this.state.toDoBtn : 'fa fa-pencil fa-2x'} aria-hidden="true" onClick={(e) => this.onEditTodo(e, index, bucketIndex)}></i>
+          <i className={data.show ? this.state.dataBucket[bucketIndex].toDo[index].toDoBtn : 'fa fa-pencil fa-2x'} aria-hidden="true" onClick={(e) => this.onEditTodo(e, index, bucketIndex)}></i>
         </div>
         <div className="col-md-2">
           <i className="fa fa-trash fa-2x" aria-hidden="true" onClick={(e) => this.deleteTodo(e, index, bucketIndex)}></i>
@@ -247,7 +241,7 @@ class App extends Component {
                   <div className="row toDoContainer">
 
                     <div className="col-md-8" key={bucketIndex}>
-                      <input type="text" onChange={(e) => this.handleChangeTodo(e, bucketIndex)} className="form-control" ref={(input) => this.input[bucketIndex] = input} />
+                      <input type="text" onChange={(e) => this.handleChangeTodo(e, dataBucket, bucketIndex)} className="form-control" ref={(input) => this.input[bucketIndex] = input} />
                     </div>
                     <div className="col-md-2">
                       <input type="submit" className="btn btn-success" disabled={dataBucket.isDisableAddTodo} value="Add Todo" onClick={(e) => this.handleSubmitTodo(e, bucketIndex)} />
