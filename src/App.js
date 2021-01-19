@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import { connect } from 'react-redux';
 import * as bucketAction from './actions/bucketAction';
-import styles from './App.css';
+
 
 class App extends Component {
 
@@ -56,7 +56,7 @@ class App extends Component {
 
   handleSubmitBucket(e) {
     e.preventDefault();
-    if (this.state.bucketName && this.state.bucketName != "") {
+    if (this.state.bucketName && this.state.bucketName !== "") {
       let dataBucket = this.props.bucket;
       let bucket = {
         bucketName: this.state.bucketName,
@@ -96,11 +96,10 @@ class App extends Component {
   }
 
   handleSubmitTodo(e, i) {
-    if (this.state.toDoName != "") {
+    if (this.state.toDoName !== "") {
       let dataBucket = this.props.bucket
       dataBucket[i].isDisableAddTodo = true
       let toDo = {
-        ...dataBucket.toDo,
         toDoName: this.state.toDoName,
         show: false,
         isComplete: false
