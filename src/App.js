@@ -120,9 +120,9 @@ class App extends Component {
     let data = this.props.bucket;
     data[bucketIndex].toDo[i].show = data[bucketIndex].toDo[i].show ? false : true
     if (data[bucketIndex].toDo[i].show) {
-      data[bucketIndex].toDo[i].toDoBtn = 'fa fa-check-circle fa-2x';
+      data[bucketIndex].toDo[i].toDoBtn = 'fa fa-check-circle fa-lg';
     } else {
-      data[bucketIndex].toDo[i].toDoBtn = 'fa fa-pencil fa-2x';      
+      data[bucketIndex].toDo[i].toDoBtn ='fa fa-pencil fa-lg';      
     }
     this.props.editTodo(data);
     this.setState({dataBucket: data  })
@@ -132,9 +132,9 @@ class App extends Component {
     let data = this.props.bucket;
     data[bucketIndex].toDo[i].isComplete = data[bucketIndex].toDo[i].isComplete ? false : true
     if (data[bucketIndex].toDo[i].isComplete) {
-      data[bucketIndex].toDo[i].inCompleteBtn = 'fa fa-undo fa-2x';      
+      data[bucketIndex].toDo[i].inCompleteBtn = 'fa fa-undo fa-lg';      
     } else {
-      data[bucketIndex].toDo[i].inCompleteBtn = 'fa fa-list fa-2x';
+      data[bucketIndex].toDo[i].inCompleteBtn = 'fa fa-check fa-lg';
     }
     this.props.editTodo(data);
     this.setState({ dataBucket: data})
@@ -179,14 +179,14 @@ class App extends Component {
         </div>
 
         <div className="col-md-2">
-          <i className={data.isComplete ? this.state.dataBucket[bucketIndex].toDo[index].inCompleteBtn : 'fa fa-list fa-2x'} aria-hidden="true" onClick={(e) => this.onCompleteTodo(e, index, bucketIndex)}></i>
+          <i className={data.isComplete ? this.state.dataBucket[bucketIndex].toDo[index].inCompleteBtn : 'fa fa-check fa-lg'} aria-hidden="true" onClick={(e) => this.onCompleteTodo(e, index, bucketIndex)}></i>
         </div>
 
         <div className="col-md-2">
-          <i className={data.show ? this.state.dataBucket[bucketIndex].toDo[index].toDoBtn : 'fa fa-pencil fa-2x'} aria-hidden="true" onClick={(e) => this.onEditTodo(e, index, bucketIndex)}></i>
+          <i className={data.show ? this.state.dataBucket[bucketIndex].toDo[index].toDoBtn : 'fa fa-pencil fa-lg'} aria-hidden="true" onClick={(e) => this.onEditTodo(e, index, bucketIndex)}></i>
         </div>
         <div className="col-md-2">
-          <i className="fa fa-trash fa-2x" aria-hidden="true" onClick={(e) => this.deleteTodo(e, index, bucketIndex)}></i>
+          <i className="fa fa-trash fa-lg" aria-hidden="true" onClick={(e) => this.deleteTodo(e, index, bucketIndex)}></i>
         </div>
       </div>
 
@@ -254,7 +254,7 @@ class App extends Component {
                 </div>
 
               )}
-            </div> : <div className="row addBucketMsg"><i className="fa fa-plus fa-2x" aria-hidden="true"></i><p className="bucketMsgP">Add New Bucket using Add Bucket Button</p></div>}
+            </div> : <div className="row addBucketMsg"><i className="fa fa-plus fa-lg" aria-hidden="true"></i><p className="bucketMsgP">Add New Bucket using Add Bucket Button</p></div>}
         </div>
       </div>
     )
