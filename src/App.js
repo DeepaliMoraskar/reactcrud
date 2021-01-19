@@ -42,17 +42,17 @@ class App extends Component {
   handleChangeTodo(e, bucketItem, i) {
     let dataBucket = this.props.bucket;
     let dataObj = dataBucket
-    if (e.target.value.length > 0) {      
+    if (e.target.value.length > 0) {
       dataBucket[i].isDisableAddTodo = false
       this.props.editBucket(dataBucket);
-      dataObj[i].name = e.target.value;      
+      dataObj[i].name = e.target.value;
     } else {
       dataBucket[i].isDisableAddTodo = true
       this.props.editBucket(dataBucket);
     }
     this.setState({
       toDoName: dataObj,
-      bucketId:i
+      bucketId: i
     })
   }
 
@@ -78,17 +78,7 @@ class App extends Component {
     }
   }
 
-  updateBucket(e, i) {
-    let dataBucket = this.props.bucket
-    dataBucket[i].bucketName = e.target.value
-    this.props.editBucket(dataBucket);
-    this.setState({
-      updateName: e.target.value,
-      dataBucket: dataBucket
-    });
-  }
-
-  updateTodo(e, i, bucketIndex) {
+   updateTodo(e, i, bucketIndex) {
     let data = this.props.bucket;
     data[bucketIndex].toDo[i].toDoName = e.target.value
     this.props.editTodo(data);
@@ -96,23 +86,23 @@ class App extends Component {
       dataBucket: data
     });
   }
-  
 
-    handleSubmitTodo(e, i) {
-      if (this.state.toDoName[i].name !== "") {
-        let dataBucket = this.props.bucket
-        dataBucket[i].isDisableAddTodo = true
-        let toDo = {
-          toDoName: this.state.toDoName[i].name,
-          show: false,
-          isComplete: false
-        }
-        dataBucket[i].toDo.push(toDo);
-        this.props.createTodo(dataBucket);
-        this.input[i].value = ''
-        this.setState({
-          dataBucket: dataBucket
-        });
+
+  handleSubmitTodo(e, i) {
+    if (this.state.toDoName[i].name !== "") {
+      let dataBucket = this.props.bucket
+      dataBucket[i].isDisableAddTodo = true
+      let toDo = {
+        toDoName: this.state.toDoName[i].name,
+        show: false,
+        isComplete: false
+      }
+      dataBucket[i].toDo.push(toDo);
+      this.props.createTodo(dataBucket);
+      this.input[i].value = ''
+      this.setState({
+        dataBucket: dataBucket
+      });
     }
   }
 
@@ -122,48 +112,25 @@ class App extends Component {
     if (data[bucketIndex].toDo[i].show) {
       data[bucketIndex].toDo[i].toDoBtn = 'fa fa-check-circle fa-lg';
     } else {
-      data[bucketIndex].toDo[i].toDoBtn ='fa fa-pencil fa-lg';      
+      data[bucketIndex].toDo[i].toDoBtn = 'fa fa-pencil fa-lg';
     }
     this.props.editTodo(data);
-    this.setState({dataBucket: data  })
+    this.setState({ dataBucket: data })
   }
 
   onCompleteTodo = (e, i, bucketIndex) => {
     let data = this.props.bucket;
     data[bucketIndex].toDo[i].isComplete = data[bucketIndex].toDo[i].isComplete ? false : true
     if (data[bucketIndex].toDo[i].isComplete) {
-      data[bucketIndex].toDo[i].inCompleteBtn = 'fa fa-undo fa-lg';      
+      data[bucketIndex].toDo[i].inCompleteBtn = 'fa fa-undo fa-lg';
     } else {
       data[bucketIndex].toDo[i].inCompleteBtn = 'fa fa-check fa-lg';
     }
     this.props.editTodo(data);
-    this.setState({ dataBucket: data})
+    this.setState({ dataBucket: data })
   }
 
 
-
-  listBucketView(data, index) {
-    return (
-
-      <div className="row" key={index}>
-        <div className="col-md-2">
-          {data.show ?
-            <input type="text" id={index} className="form-control" value={data.bucketName} onChange={(e) =>
-              this.updateBucket(e, index)} /> :
-            <div>
-              {data.bucketName}
-            </div>
-          }
-        </div>
-
-        <div className="col-md-2">
-          <button onClick={(e) => this.onEditBucket(e, index)} className="btn btn-danger">
-            {data.show ? this.state.bucketBtn : 'EDIT'}
-          </button>
-        </div>
-      </div>
-    )
-  }
 
   listToDoView(data, index, bucketIndex) {
     return (
@@ -212,22 +179,6 @@ class App extends Component {
             <button type="submit" disabled={this.state.isDisableAddBucket} className="btn btn-outline-success my-2 my-sm-0" onClick={this.handleSubmitBucket}>Add Bucket</button>
           </form>
         </nav>
-
-        {/* <div className="row">
-            <div className="col-md-2">
-              <input type="text" onChange={this.handleChangeBucket} className="form-control" value={this.state.bucketName} /><br />
-            </div>
-            <div className="col-md-2">
-              <input type="submit" className="btn btn-success" value="ADD BUCKET" onClick={this.handleSubmitBucket} />
-            </div>
-          </div> */}
-
-        {/* {<ul className="list-group bg2">
-            {this.props.bucket && this.props.bucket.map((dataBucket, i) => this.listBucketView(dataBucket, i, 'bucket'))}
-          </ul>} */}
-        {/* </div> */}
-
-
 
         <div className="container">
           {this.props.bucket && this.props.bucket.length > 0 ?
